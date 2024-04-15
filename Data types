@@ -1,0 +1,42 @@
+// Experiment 1: Solidity contract with variables of different data types
+
+pragma solidity ^0.8.0;
+
+contract DataTypes {
+    uint public uintVariable;
+    string public stringVariable;
+    address public addressVariable;
+    bool public boolVariable;
+    
+    constructor(uint _uintVariable, string memory _stringVariable, address _addressVariable, bool _boolVariable) {
+        uintVariable = _uintVariable;
+        stringVariable = _stringVariable;
+        addressVariable = _addressVariable;
+        boolVariable = _boolVariable;
+    }
+    
+    function performOperations(uint num1, uint num2) public view returns (uint, string memory) {
+        uint sum = num1 + num2;
+        string memory concatenation = string(abi.encodePacked("Sum is: ", uintToString(sum)));
+        return (sum, concatenation);
+    }
+    
+    function uintToString(uint _num) internal pure returns (string memory) {
+        if (_num == 0) {
+            return "0";
+        }
+        uint length;
+        uint num = _num;
+        while (num != 0) {
+            length++;
+            num /= 10;
+        }
+        bytes memory buffer = new bytes(length);
+        while (_num != 0) {
+            length--;
+            buffer[length] = bytes1(uint8(48 + _num % 10));
+            _num /= 10;
+        }
+        return string(buffer);
+    }
+}
